@@ -1,18 +1,30 @@
-import json
-
 import requests
 import re
 from datetime import datetime
 import time
 
 class Crawl(object):
+    def user_crawl(self, url):
+        """
+        Crawl the user page content from the specified URL.
 
-    def user_crawl(self,url):
-        cookies,headers = self.__user_setting()
+        Parameters:
+        url (str): Target URL.
+
+        Returns:
+        str: Response text content.
+        """
+        cookies, headers = self.__user_setting()
         resp = requests.get(url, cookies=cookies, headers=headers)
         return resp.text
 
     def __user_setting(self):
+        """
+        Set the cookies and headers for user requests.
+
+        Returns:
+        tuple: Cookies and headers for the request.
+        """
         self.cookies = {
             'sb': 'gWVJZm-1I8usm1e8btXEpv2f',
             'datr': 'gWVJZqROEYbyiKkplq-Vwwdd',
@@ -46,10 +58,21 @@ class Crawl(object):
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
             'viewport-width': '1018',
         }
-        return self.cookies,self.headers
+        return self.cookies, self.headers
 
-    def friends_crawl(self, url ,end_cursor='',id=None):
-        if id == None:
+    def friends_crawl(self, url, end_cursor='', id=None):
+        """
+        Crawl the friends list of a user from the specified URL.
+
+        Parameters:
+        url (str): Target URL.
+        end_cursor (str, optional): Cursor for pagination. Defaults to ''.
+        id (str, optional): Collection token ID. Defaults to None.
+
+        Returns:
+        tuple: Collection token ID and response text content.
+        """
+        if id is None:
             cookies, headers = self.__friends_id_setting()
             if "profile.php?id=" in url:
                 url_parts = url.split("?")
@@ -62,11 +85,17 @@ class Crawl(object):
             id = re.findall(ex, resp.text, re.S)[0]
         else:
             pass
-        cookies,headers,params = self.__friends_following_followers_setting(end_cursor,id)
-        resp = requests.post('https://www.facebook.com/api/graphql/',cookies=cookies,headers=headers,params=params)
-        return id , resp.text
+        cookies, headers, params = self.__friends_following_followers_setting(end_cursor, id)
+        resp = requests.post('https://www.facebook.com/api/graphql/', cookies=cookies, headers=headers, params=params)
+        return id, resp.text
 
     def __friends_id_setting(self):
+        """
+        Set the cookies and headers for friends ID requests.
+
+        Returns:
+        tuple: Cookies and headers for the request.
+        """
         self.cookies = {
             'sb': 'gWVJZm-1I8usm1e8btXEpv2f',
             'datr': 'gWVJZqROEYbyiKkplq-Vwwdd',
@@ -101,10 +130,21 @@ class Crawl(object):
             'viewport-width': '1019',
         }
 
-        return self.cookies,self.headers
+        return self.cookies, self.headers
 
-    def following_crawl(self, url ,end_cursor='',id=None):
-        if id == None:
+    def following_crawl(self, url, end_cursor='', id=None):
+        """
+        Crawl the following list of a user from the specified URL.
+
+        Parameters:
+        url (str): Target URL.
+        end_cursor (str, optional): Cursor for pagination. Defaults to ''.
+        id (str, optional): Collection token ID. Defaults to None.
+
+        Returns:
+        tuple: Collection token ID and response text content.
+        """
+        if id is None:
             cookies, headers = self.__following_id_setting()
             if "profile.php?id=" in url:
                 url_parts = url.split("?")
@@ -117,11 +157,17 @@ class Crawl(object):
             id = re.findall(ex, resp.text, re.S)[0]
         else:
             pass
-        cookies,headers,params = self.__friends_following_followers_setting(end_cursor,id)
-        resp = requests.post('https://www.facebook.com/api/graphql/',cookies=cookies,headers=headers,params=params)
-        return id , resp.text
+        cookies, headers, params = self.__friends_following_followers_setting(end_cursor, id)
+        resp = requests.post('https://www.facebook.com/api/graphql/', cookies=cookies, headers=headers, params=params)
+        return id, resp.text
 
     def __following_id_setting(self):
+        """
+        Set the cookies and headers for following ID requests.
+
+        Returns:
+        tuple: Cookies and headers for the request.
+        """
         self.cookies = {
             'sb': 'gWVJZm-1I8usm1e8btXEpv2f',
             'datr': 'gWVJZqROEYbyiKkplq-Vwwdd',
@@ -155,10 +201,21 @@ class Crawl(object):
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
             'viewport-width': '1019',
         }
-        return self.cookies,self.headers
+        return self.cookies, self.headers
 
-    def followers_crawl(self, url ,end_cursor='',id=None):
-        if id == None:
+    def followers_crawl(self, url, end_cursor='', id=None):
+        """
+        Crawl the followers list of a user from the specified URL.
+
+        Parameters:
+        url (str): Target URL.
+        end_cursor (str, optional): Cursor for pagination. Defaults to ''.
+        id (str, optional): Collection token ID. Defaults to None.
+
+        Returns:
+        tuple: Collection token ID and response text content.
+        """
+        if id is None:
             cookies, headers = self.__followers_id_setting()
             if "profile.php?id=" in url:
                 url_parts = url.split("?")
@@ -171,11 +228,17 @@ class Crawl(object):
             id = re.findall(ex, resp.text, re.S)[0]
         else:
             pass
-        cookies,headers,params = self.__friends_following_followers_setting(end_cursor,id)
-        resp = requests.post('https://www.facebook.com/api/graphql/',cookies=cookies,headers=headers,params=params)
-        return id , resp.text
+        cookies, headers, params = self.__friends_following_followers_setting(end_cursor, id)
+        resp = requests.post('https://www.facebook.com/api/graphql/', cookies=cookies, headers=headers, params=params)
+        return id, resp.text
 
     def __followers_id_setting(self):
+        """
+        Set the cookies and headers for followers ID requests.
+
+        Returns:
+        tuple: Cookies and headers for the request.
+        """
         self.cookies = {
             'sb': 'gWVJZm-1I8usm1e8btXEpv2f',
             'datr': 'gWVJZqROEYbyiKkplq-Vwwdd',
@@ -209,9 +272,19 @@ class Crawl(object):
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
             'viewport-width': '1019',
         }
-        return self.cookies,self.headers
+        return self.cookies, self.headers
 
-    def __friends_following_followers_setting(self,page,id):
+    def __friends_following_followers_setting(self, page, id):
+        """
+        Set the cookies, headers, and data for friends/following/followers requests.
+
+        Parameters:
+        page (str): Cursor for pagination.
+        id (str): Collection token ID.
+
+        Returns:
+        tuple: Cookies, headers, and data for the request.
+        """
         self.cookies = {
             'sb': 'gWVJZm-1I8usm1e8btXEpv2f',
             'datr': 'gWVJZqROEYbyiKkplq-Vwwdd',
@@ -228,7 +301,6 @@ class Crawl(object):
             'accept': '*/*',
             'accept-language': 'zh-CN,zh;q=0.9',
             'content-type': 'application/x-www-form-urlencoded',
-            # 'cookie': 'sb=gWVJZm-1I8usm1e8btXEpv2f; datr=gWVJZqROEYbyiKkplq-Vwwdd; dpr=1.25; c_user=61553712069078; ps_n=1; ps_l=1; xs=11%3AaCIlVbpwVqAttQ%3A2%3A1716086153%3A-1%3A-1%3A%3AAcUScBAqXdAVHCjMq1t3EwA-RV6IkQsg3nf1i01m1cI; fr=1QDwmpBA3kzZXb32I.AWUB6LeT18Q06HXinTbaifljvkY.BmUCUv..AAA.0.0.BmUCUv.AWUCCEl-1w4; wd=1536x695; presence=C%7B%22t3%22%3A%5B%5D%2C%22utc3%22%3A1716529662324%2C%22v%22%3A1%7D',
             'origin': 'https://www.facebook.com',
             'priority': 'u=1, i',
             'referer': 'https://www.facebook.com/rodrigojrbarliso.pacunla/friends',
@@ -275,10 +347,22 @@ class Crawl(object):
             'server_timestamps': 'true',
             'doc_id': '8023840227643650',
         }
-        return self.cookies,self.headers,self.data
+        return self.cookies, self.headers, self.data
 
-    def post_crawl(self,url,id=None,cursor='',bef_time=''):
-        if id == None:
+    def post_crawl(self, url, id=None, cursor='', bef_time=''):
+        """
+        Crawl the posts of a user from the specified URL.
+
+        Parameters:
+        url (str): Target URL.
+        id (str, optional): User ID. Defaults to None.
+        cursor (str, optional): Cursor for pagination. Defaults to ''.
+        bef_time (str, optional): Before time in 'YYYY-MM-DD' format. Defaults to ''.
+
+        Returns:
+        tuple: User ID and response text content.
+        """
+        if id is None:
             cookies, headers = self.__followers_id_setting()
             resp = requests.get(url, cookies=cookies, headers=headers).text
             id = re.search('"userID":"(.*?)"', resp, re.S).group(1)
@@ -290,13 +374,19 @@ class Crawl(object):
             date_object = datetime.strptime(bef_time, "%Y-%m-%d")
             timestamp = int(time.mktime(date_object.timetuple())) + 86400
 
-        cookies,headers,params = self.__post_setting(id,cursor,timestamp)
+        cookies, headers, params = self.__post_setting(id, cursor, timestamp)
 
         res = requests.post('https://www.facebook.com/api/graphql/', cookies=cookies, headers=headers, data=params).text
         tate = res.split('\r\n')[0]
-        return id,tate
+        return id, tate
 
     def __post_id_setting(self):
+        """
+        Set the cookies and headers for post ID requests.
+
+        Returns:
+        tuple: Cookies and headers for the request.
+        """
         self.cookies = {
             'sb': 'gWVJZm-1I8usm1e8btXEpv2f',
             'datr': 'gWVJZqROEYbyiKkplq-Vwwdd',
@@ -330,9 +420,20 @@ class Crawl(object):
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
             'viewport-width': '1018',
         }
-        return self.cookies,self.headers
+        return self.cookies, self.headers
 
-    def __post_setting(self,id,cursor,time):
+    def __post_setting(self, id, cursor, time):
+        """
+        Set the cookies, headers, and data for post requests.
+
+        Parameters:
+        id (str): User ID.
+        cursor (str): Cursor for pagination.
+        time (int): Timestamp.
+
+        Returns:
+        tuple: Cookies, headers, and data for the request.
+        """
         self.cookies = {
             'sb': 'gWVJZm-1I8usm1e8btXEpv2f',
             'datr': 'gWVJZqROEYbyiKkplq-Vwwdd',
@@ -395,32 +496,7 @@ class Crawl(object):
             'server_timestamps': 'true',
             'doc_id': '26470356505897296',
         }
-        return self.cookies,self.headers,self.data
+        return self.cookies, self.headers, self.data
 
-if __name__ == '__main__':
-    a = Crawl()
-    b = a.user_crawl('https://www.facebook.com/emyrrej.artsal')
-    # print(b)
 
-    # c = a.friends_crawl('https://www.facebook.com/profile.php?id=100050249863966')
-    # print(c[0])
-
-    c = a.followers_crawl('https://www.facebook.com/profile.php?id=100050249863966')
-    print(c[0])
-
-    c = a.following_crawl('https://www.facebook.com/profile.php?id=100050249863966')
-    print(c[0])
-
-    # from extract import Extract
-    # d = Extract()
-    # e = d.friends_following_followers_extract(c[1],'https://www.facebook.com/profile.php?id=100050249863966')
-    # print(e)
-
-    # c = a.post_crawl('https://www.facebook.com/emyrrej.artsal',cursor='AQHR1ThKwoJjDSqEmkcRCuk78tXPNiSMgPk7My5GPPhAS9StcSrOZ_pBMuxeICZmxq4CZXPpTSoL3fnHGK8Db75j088iNQpsnlJlZap_0k5nrGJuJERXPTJfKSQm50xEx7zn4J-3C66bbQYLTysayREnUKqn2cjefbfO1paXlQ3VA2Tq68vANJF6TpJN41kKvt8QjfcIXYJ2xAfPglcqFdxaMti-l8ovnUUk4zxPixodJN_oYjiCjnFTFuFpoG8o5I7wZntAyBt9F6fKlIeXztWTftPpwDfxn8Ltn0_FJFVA1kbz4bGAKqrAKREB8-xwKZImltO25-LQ5JfUzY5cxhA8yyJYZTF2hE-dffDCJOaLjlHc1s1YcK7F2Cz26W4kctW4_89dSKQPGfXyFDyBv64jNKNhpzaFE8m9-i1MsXJsnp7YzPsZ86w6bGoP8dyRUqK2f0B0XF3yISOKnpZLSt4lBw')
-    # print(c[1])
-    #
-    # from extract import Extract
-    # d = Extract()
-    # e = d.post_extract(json.loads(c[1]))
-    # print(e)
-
+help(Crawl)
